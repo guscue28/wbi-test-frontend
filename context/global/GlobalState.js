@@ -18,7 +18,7 @@ const GlobalState = props => {
         shoes: [
             {
                 name: 'Nike ZoomX Vaporfly Next% x Gyakusou',
-                image: `${shoe1}`,
+                image: shoe1,
                 slug: 'nike-zoomx-vaporfly-next-x-gyakusou',
                 price: 200
             },
@@ -100,7 +100,10 @@ const GlobalState = props => {
         })
     }
 
-    const clearCurrent = () => dispatch({type: CLEAR_CURRENT});
+    const clearCurrent = () => {
+        console.log('estoy aqui');
+        dispatch({ type: CLEAR_CURRENT })
+    };
 
     return (
         <globalContext.Provider
