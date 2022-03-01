@@ -71,7 +71,6 @@
 	bottom: 0;
 	left: 0;
 	width: 100%;
-	content: "Developed By Ahmed Faraz";
 	text-align: center;
 	padding: 10px;
 	font-size: 16px;
@@ -85,4 +84,29 @@
 	width: 35px;
 	height: 35px;
 	margin-top: 5px;
+}
+.search {
+	border-radius: 20px !important;
+	margin-left: 0px !important;
+	color: white !important;
+	/* background-color: white !important; */
+	width: 100% !important;
+}
+
+.searchIcon {
+	padding: 7px !important;
+	height: 100% !important;
+	position: absolute !important;
+	display: flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+}
+
+.inputInput {
+	padding: 10px !important;
+	width: 100% !important;
+}
+
+.inputRoot {
+	color: white !important;
 }

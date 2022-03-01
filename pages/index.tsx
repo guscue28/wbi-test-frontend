@@ -4,21 +4,10 @@ import styles from '../styles/Home.module.css';
 import { Button, Typography } from '@material-ui/core';
 // Material-ui icons
 import { ShoppingCart } from '@material-ui/icons';
-// Routing elements
-// import { useNavigate } from 'react-router';
-// Context
-import globalContext from '../context/global/globalContext';
-import Navbar from '../components/navbar';
 
 const Home = () => {    
-    const { clearCurrent } = useContext(globalContext);
 
     // const navigate = useNavigate();
-
-    useEffect(() => {
-      clearCurrent();
-        // eslint-disable-next-line
-    },[])
 
     // const onClick = () => navigate('products');
   return (
@@ -32,7 +21,7 @@ const Home = () => {
           endIcon={<ShoppingCart />}
           href='/products'
             >
-                    Buy Now
+                    Comprar
             </Button>
       </div>
       </>

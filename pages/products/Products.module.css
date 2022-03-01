@@ -1,12 +1,83 @@
 .container {
-	padding: 10px !important;
+	/* margin-top: 20px !important; */
+	padding: 60px !important;
 }
 
 .card {
 	position: relative;
 }
-
-.card img {
-	width: 100%;
-	object-fit: cover;
+.imgContainer {
+	display: flex !important;
+	flex-direction: row !important;
+	justify-content: center !important;
+	background-color: #f6f6f6 !important;
 }
+.infoContainer {
+	display: flex !important;
+	flex-direction: row !important;
+	justify-content: center !important;
+	margin-left: auto !important;
+}
+
+.spinnerContainer {
+	display: flex !important;
+	flex-direction: row !important;
+	justify-content: center !important;
+	margin-left: auto !important;
+	margin-top: 500px !important;
+}
+
+.paginationContainer {
+	margin-top: 50px !important;
+	display: flex !important;
+	flex-direction: row !important;
+	justify-content: center !important;
+	align-content: center !important;
+}
+
+.paginationBttns {
+	width: 80%;
+	height: 40px;
+	list-style: none;
+	display: flex;
+	justify-content: center;
+}
+
+.paginationBttns a {
+	background-color: black !important;
+	padding: 10px;
+	margin: 8px;
+	border-radius: 5px;
+	border: 1px solid black;
+	color: white;
+	cursor: pointer;
+}
+
+.paginationBttns a:hover {
+	color: white;
+	background-color: black;
+}
+
+.paginationActive a {
+	color: white;
+	background-color: black;
+}
+
+.paginationDisabled a {
+	color: grey;
+	background-color: white;
+}
+
+.filterContainer {
+	padding: 20px !important;
+	margin-bottom: -40px !important;
+	/* height: 50px !important; */
+}
+.filter {
+	width: 150px !important;
+}
+
+/* .card img {
+	width: 40%;
+	object-fit: cover;
+} */
