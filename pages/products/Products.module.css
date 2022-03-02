@@ -73,8 +73,32 @@
 	margin-bottom: -40px !important;
 	/* height: 50px !important; */
 }
+
+.filterSubContainer {
+	padding: 20px !important;
+	/* height: 50px !important; */
+}
+.filterTitle {
+	margin-right: 50px !important;
+}
 .filter {
 	width: 150px !important;
+	margin-right: 50px !important;
+}
+.filterReleased {
+	width: 300px !important;
+}
+
+.notMatchContainder {
+	background-color: #202124 !important;
+	border-radius: 20px !important;
+	width: 40% !important;
+	height: 200px !important;
+	-webkit-box-shadow: 5px 5px 15px 5px #000000;
+	box-shadow: 5px 5px 15px 5px #000000;
+}
+.notMatchTitle {
+	color: white !important;
 }
 
 /* .card img {

@@ -1,3 +1,4 @@
 export const Api = {
-  requestCharacters: '/api/character/',
+  requestAllShoes: '/shoes/all',
+  requesAllStores: '/stores/all',
 }

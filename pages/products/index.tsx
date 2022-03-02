@@ -15,38 +15,76 @@ import 'react-dropdown/style.css';
 //Activity indicator
 import { Spinner } from "react-activity";
 import "react-activity/dist/library.css";
+import { baseURL } from '../../services/Axios';
+import { Stores } from '../../interfaces/Stores.interfaces';
 
 const Products = () => {
-    const { shoes, getAllshoes } = useContext(AppDataContext);
-    const [loading, setLoading] = useState<boolean>(false);
+    const { shoes, stores, searchKey, getAllShoes, getAllStores } = useContext(AppDataContext);
+    const [loading, setLoading] = useState<boolean>(true);
     const [currentPage, setCurrentPage] = useState<number>(0);
-    const [shoesPerPage, setShoesPerPage] = useState<number>(5);
-    const [filter, setfilter] = useState<string>('')
+    const [shoesPerPage, setShoesPerPage] = useState<number>(8);
+    const [storesFilter, setStoresFilter] = useState<string>('')
+    const [releasedFilter, setReleasedFilter] = useState<string>('')
 
-    // const navigate = useRouter();
+    const router = useRouter();
 
-    const pageCount = Math.ceil(shoes?.results.length / shoesPerPage)
+    const pageCount = Math.ceil(shoes!.count / shoesPerPage)
 
-    const changePage = (selected: any) => {
+    const changePage = ({selected}: any) => {
         setCurrentPage(selected);
     }
 
     //Filter 
-    const filterOptions = [
-        'Filtros...',
-        'Marca',
-        'Modelo',
-        'Fecha de lanzamiento',
-        'Tiendas',
-
+    const released: any = [
+        {
+            value: '',
+            label: 'Fecha de lanzamiento'
+        }
     ]
+    const allStores: any = [
+        {
+            value: '',
+            label: 'Tiendas',
+        }
+    ]
+    for (let i = 1980; i <= new Date().getFullYear(); i++) {
+        released.push({
+            value: i,
+            label: i,
+        })
+    }
+    stores.map((el: Stores) => allStores.push({
+        value: el._id,
+        label: el.name,
+    }))
+    // const allReleased = 
+    
+    const getAllData = async () => {
+        const sort = {
+            searchKey: searchKey,
+            itemsPerPage: shoesPerPage,
+            page: currentPage,
+            store: storesFilter,
+            releaseAt: releasedFilter
+        }
+        await getAllShoes(sort);
+        await getAllStores();
+        console.log('router', router)
+        setLoading(false);
+    }
+    
+    useEffect(() => {
+        setCurrentPage(0);
+        getAllData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [searchKey, storesFilter, releasedFilter])
 
     useEffect(() => {
-        getAllshoes();
-        !shoes?.results.length ? setLoading(true) : setLoading(false)
-        // console.log('shoes', loading);
-        
-    },[getAllshoes, loading, shoes?.results.length])
+        getAllData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [currentPage])
+    
+    
 
     return (
         <Fragment>
@@ -63,20 +101,45 @@ const Products = () => {
                 justifyContent="flex-end"
                 alignItems="center"
                 className={styles.filterContainer}>
-                <Dropdown
-                options={filterOptions}
-                onChange={((val: any) => {
-                if (val.value === 'Filtros...') {
-                    setfilter('');
-                    }
-                    setfilter(val.value);
-                    console.log('val', val.value);
-                })}
-                value={filter ? filter : ''}
-                placeholder="Filtros..."
-                controlClassName={styles.filter}
-                menuClassName={styles.filter}
-                 />
+                <Grid
+                container
+                direction="row"
+                justifyContent="flex-end"
+                alignItems="stretch"
+                className={styles.filterSubContainer}>
+                        <Typography align="left" variant="h5" className={styles.filterTitle}>
+                            Filtros
+                        </Typography>        
+                        <Dropdown     
+                        options={allStores}
+                        onChange={((val: any) => {
+                        if (val.value === '') {
+                            setStoresFilter('');
+                            }
+                            setStoresFilter(val.value);
+                            console.log('val', val.value);
+                        })}
+                        value={storesFilter}
+                        placeholder="Tiendas"
+                        
+                        controlClassName={styles.filter}
+                        menuClassName={styles.filter}
+                                    />
+                        <Dropdown
+                        options={released}
+                        onChange={((val: any) => {
+                        if (val.value === 'Fecha de Lanzamiento') {
+                            setReleasedFilter('');
+                            }
+                            setReleasedFilter(val.value);
+                            console.log('val', val.value);
+                        })}
+                        value={releasedFilter}
+                        placeholder="Fecha de Lanzamiento"
+                        controlClassName={styles.filterReleased}
+                        menuClassName={styles.filterReleased}
+                        />
+                    </Grid>
                 </Grid>
                  <Grid
                 container
@@ -86,19 +149,24 @@ const Products = () => {
                 spacing={2}
                 className={styles.container}
             >
-                {
-                    shoes?.results!.map((shoe: any) => {          
+            {shoes.shoes.length
+                                ?
+                    shoes.shoes.map((shoe: any) => {          
                         return (
                             (
                                 <Grid item xs={12} sm={6} md={6} lg={3} xl={3} key={shoe.slug}>
                                     <Card
                                         className={styles.card}
-                                        // onClick={() => navigate(`${shoe.slug}`)}
                                     >
                                         <CardActionArea>
-                                            {/* <Grid className={styles.imgContainer}>
-                                                <Image src={shoe.image} alt={shoe.name} width={200} height={200} />
-                                                </Grid> */}
+                                            <Grid className={styles.imgContainer}>
+                                                <Image
+                                                    src={`${baseURL}/${shoe.img}`}
+                                                    alt={shoe.name}
+                                                    width={180}
+                                                    height={200}
+                                                />
+                                                </Grid>
                                             <CardContent>
                                             <Grid className={styles.infoContainer}>
                                                     <Typography variant="subtitle2"><strong>{shoe.name}</strong></Typography>
@@ -114,8 +182,23 @@ const Products = () => {
                             )
                         )
                     })
+                    
+                     : (
+                        <Grid
+                        container
+                        direction="row"
+                        justifyContent="center"
+                        alignItems="center"
+                        className={styles.notMatchContainder}                
+                        >     
+                        <Typography align="left" variant="h5" className={styles.notMatchTitle}>
+                            No se encontraron resultados
+                        </Typography>  
+                        </Grid>                
+                    )
                 }
             </Grid>
+            {shoes.shoes.length && (
             <Grid className={styles.paginationContainer}>
                 <ReactPaginate
                     pageCount={pageCount}
@@ -129,9 +212,9 @@ const Products = () => {
                     disabledClassName={styles.paginationDisabled}
                     activeClassName={styles.paginationActive}
                 />
-                {/* <Pagination shoesPerPage={shoesPerPage} totalShoes={shoes!.results!.length} /> */}
-            </Grid>
-                </>
+            </Grid>         
+            )}
+            </>
             )}
            
         </Fragment>

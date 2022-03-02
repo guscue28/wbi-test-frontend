@@ -2,92 +2,30 @@ import React, { useReducer, useState } from 'react';
 import axios from 'axios';
 //Services
 import * as ShoesService from '../services/shoes/Shoes.services'
-// import globalContext from './globalContext';
-// import globalReducer from './globalReducer';
-// import { SET_CURRENT, CLEAR_CURRENT } from '../types';
-import shoe1 from '../../assets/images/shoe1.jpg';
-import shoe2 from '../../assets/images/shoe2.jpg';
-import shoe3 from '../../assets/images/shoe3.jpg';
-import shoe4 from '../../assets/images/shoe4.jpg';
-import shoe5 from '../../assets/images/shoe5.jpg';
-import shoe6 from '../../assets/images/shoe6.jpg';
-import shoe7 from '../../assets/images/shoe7.jpg';
-import shoe8 from '../../assets/images/shoe8.jpg';
-import shoe9 from '../../assets/images/shoe9.jpg';
-import shoe10 from '../../assets/images/shoe10.jpg';
+import * as StoresService from '../services/stores/Stores.services'
+import {ShoesData } from '../interfaces/Shoes.interfaces';
+import { Stores } from '../interfaces/Stores.interfaces';
 
-// shoes: [
-//     {
-//         name: 'Nike ZoomX Vaporfly Next% x Gyakusou',
-//         image: shoe1,
-//         slug: 'nike-zoomx-vaporfly-next-x-gyakusou',
-//         price: 200
-//     },
-//     {
-//         name: 'Nike Adapt BB 2.0',
-//         image: shoe2,
-//         slug: 'nike-adapt-bb-2.0',
-//         price: 150
-//     },
-//     {
-//         name: 'Nike ZoomX Vaporfly NEXT% 2',
-//         image: shoe3,
-//         slug: 'nike-zoomz-vaporfly-next-2',
-//         price: 120
-//     },
-//     {
-//         name: 'Nike Air Max 95',
-//         image: shoe4,
-//         slug: 'nike-air-max-95',
-//         price: 138.97
-//     },
-//     {
-//         name: 'Nike Air Zoom Alphafly NEXT% Flyknit',
-//         image: shoe5,
-//         slug: 'nike-air-zoom-alphafly-next-flyknit',
-//         price: 100
-//     },
-//     {
-//         name: 'Nike Air Zoom Pegasus 38',
-//         image: shoe6,
-//         slug: 'nike-air-zoom-pegasus-38',
-//         price: 250
-//     },
-//     {
-//         name: 'Nike Air Max 270',
-//         image: shoe7,
-//         slug: 'nike-air-max-270',
-//         price: 150
-//     },
-//     {
-//         name: "Nike Air Max 95 Essential",
-//         image: shoe8,
-//         slug: "nike-air-max-95-essential",
-//         price: 170
-//     },
-//     {
-//         name: 'Nike Air VaporMax Plus',
-//         image: shoe9,
-//         slug: 'nike-air-vapormax-plus',
-//         price: 200
-//     },
-//     {
-//         name: 'Nike Air Force 1 \'07 Craft',
-//         image: shoe10,
-//         slug: 'nike-air-force-1-07-craft',
-//         price: 120
-//     }
-// ],
 
 export interface AppDataContext {
-    shoes: [] | null;
-    getAllshoes: () => Promise<void>;
+  shoes: ShoesData,
+  stores: Stores[],
+  searchKey: string,
+  getAllShoes: (sorts: any) => Promise<void>;
+  getAllStores: () => Promise<void>;
+  search: (val: string) => void;
 }
 
 const initialContextValue: AppDataContext = {
-    shoes: null,
-    getAllshoes: async () => {},
-    
+  shoes: {
+    count: 0,
+    shoes: [],
+  },
+  stores: [],
+  searchKey: '',
+  getAllShoes: async () => { },
+  getAllStores: async () => { },
+  search: () => {}
 };
 
 export const AppDataContext = React.createContext<AppDataContext>(initialContextValue);
@@ -97,28 +35,47 @@ interface AppDataProviderProps {
 }
 
 export const AppDataprovider = ({ children }: AppDataProviderProps) => {
-    const [shoes, setShoes] = useState<any>(null);
-
-
-
-    return (
-        <AppDataContext.Provider
-            value={{
-                shoes,
-                getAllshoes: async () => {
-                    try {
-                        const res = await ShoesService.requestShoes();
-                        setShoes(res);
-                    } catch (error) {
-                        console.log(error);
-                    }
-                },
-        }}
-        >
-            {children}
-        </AppDataContext.Provider>
-    )
-    
+  const [shoes, setShoes] = useState<ShoesData>({
+    count: 0,
+    shoes: [],
+  });
+  const [stores, setStores] = useState<Stores[]>([])
+  const [searchKey, setSearchKey] = useState<string>('')
+  return (
+      <AppDataContext.Provider
+          value={{
+            shoes,
+            stores,
+            searchKey,
+            getAllShoes: async (sorts: any) => {
+                  try {
+                      const res = await ShoesService.requestShoes(sorts);
+                      setShoes({
+                        count: res.count,
+                        shoes: res.shoes,
+                      });
+                  } catch (error) {
+                      console.log(error);
+                  }
+            },
+            getAllStores: async () => {
+              try {
+                const res = await StoresService.requestStores();
+                setStores(res)
+              } catch (error) {
+                console.log(error);
+                
+              }
+        },
+        search: (val: string) => {
+          setSearchKey(val)
+        }
+      }}
+      >
+          {children}
+      </AppDataContext.Provider>
+  )
+  
 }
 
 // const GlobalState = props => {

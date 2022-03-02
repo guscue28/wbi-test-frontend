@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styles from './Navbar.module.css';
 // Material-ui components
 import { AppBar, IconButton, Toolbar, Typography, InputBase, alpha, makeStyles, Grid} from '@material-ui/core';
@@ -7,6 +7,7 @@ import { Menu, Close, Search, ShoppingCart } from '@material-ui/icons';
 // Routing element
 import Link from 'next/link';
 import { useRouter } from "next/router";
+import { AppDataContext } from '../../context/appData.context';
 
 // const useStyles = makeStyles((theme) => ({
 //     root: {
@@ -38,8 +39,10 @@ import { useRouter } from "next/router";
 //   }));
 
 const Navbar = () => {
+  const {searchKey, search } = useContext(AppDataContext);
+  
   const [display, setDisplay] = useState(false);
-  const [search, setSearch] = useState<string>('');
+  // const [search, setSearch] = useState<string>('');
 
   // const classes = useStyles();
 
@@ -81,7 +84,7 @@ const Navbar = () => {
               <Search />
             </Grid>
           <InputBase
-            value={search ? search : ''}
+            value={searchKey}
               placeholder="Busqueda…"
               classes={{
                 root: styles.inputRoot,
@@ -89,8 +92,12 @@ const Navbar = () => {
               }}
             inputProps={{ 'aria-label': 'search' }}
             onChange={(val) => {
-              setSearch(val.target.value);
-              console.log('valSearch', val.target.value);
+              search(val.target.value);
+            }}
+            onKeyUp={(event) => {
+              if (event.key === 'Enter') {
+                router.push(`products`)
+              }    
             }}
             />
           </Grid>
