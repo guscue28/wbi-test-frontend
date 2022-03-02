@@ -5,13 +5,14 @@ import * as ShoesService from '../services/shoes/Shoes.services'
 import * as StoresService from '../services/stores/Stores.services'
 import {ShoesData } from '../interfaces/Shoes.interfaces';
 import { Stores } from '../interfaces/Stores.interfaces';
+import { Sort } from '../interfaces/Sort.interfaces';
 
 
 export interface AppDataContext {
   shoes: ShoesData,
   stores: Stores[],
   searchKey: string,
-  getAllShoes: (sorts: any) => Promise<void>;
+  getAllShoes: (sorts: Sort) => Promise<void>;
   getAllStores: () => Promise<void>;
   search: (val: string) => void;
 }
@@ -47,7 +48,7 @@ export const AppDataprovider = ({ children }: AppDataProviderProps) => {
             shoes,
             stores,
             searchKey,
-            getAllShoes: async (sorts: any) => {
+            getAllShoes: async (sorts: Sort) => {
                   try {
                       const res = await ShoesService.requestShoes(sorts);
                       setShoes({

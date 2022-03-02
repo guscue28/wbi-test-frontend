@@ -1,5 +1,4 @@
 .container {
-	/* margin-top: 20px !important; */
 	padding: 60px !important;
 }
 
@@ -10,7 +9,7 @@
 	display: flex !important;
 	flex-direction: row !important;
 	justify-content: center !important;
-	background-color: #f6f6f6 !important;
+	background-color: transparent !important;
 }
 .infoContainer {
 	display: flex !important;
@@ -102,8 +101,3 @@
 .notMatchTitle {
 	color: white !important;
 }
-
-/* .card img {
-	width: 40%;
-	object-fit: cover;
-} */

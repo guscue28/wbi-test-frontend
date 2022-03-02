@@ -15,8 +15,13 @@ import 'react-dropdown/style.css';
 //Activity indicator
 import { Spinner } from "react-activity";
 import "react-activity/dist/library.css";
+//Moment
+import moment from 'moment';
+
 import { baseURL } from '../../services/Axios';
 import { Stores } from '../../interfaces/Stores.interfaces';
+import { DropdownValues } from '../../interfaces/DropdownsValues.interfaces';
+import { Shoe } from '../../interfaces/Shoes.interfaces';
 
 const Products = () => {
     const { shoes, stores, searchKey, getAllShoes, getAllStores } = useContext(AppDataContext);
@@ -35,13 +40,13 @@ const Products = () => {
     }
 
     //Filter 
-    const released: any = [
+    const released: DropdownValues[] = [
         {
             value: '',
             label: 'Fecha de lanzamiento'
         }
     ]
-    const allStores: any = [
+    const allStores: DropdownValues[] = [
         {
             value: '',
             label: 'Tiendas',
@@ -151,10 +156,10 @@ const Products = () => {
             >
             {shoes.shoes.length
                                 ?
-                    shoes.shoes.map((shoe: any) => {          
+                    shoes.shoes.map((shoe: Shoe) => {          
                         return (
                             (
-                                <Grid item xs={12} sm={6} md={6} lg={3} xl={3} key={shoe.slug}>
+                                <Grid item xs={12} sm={6} md={6} lg={3} xl={3} key={shoe._id}>
                                     <Card
                                         className={styles.card}
                                     >
@@ -172,9 +177,20 @@ const Products = () => {
                                                     <Typography variant="subtitle2"><strong>{shoe.name}</strong></Typography>
                                                 </Grid>
                                             <Grid className={styles.infoContainer}>
-                                                
-                                                    <Typography variant="body2">Price ${shoe.price}</Typography>
-                                            </Grid>
+                                                    <Typography variant="subtitle2"><strong>Marca: {shoe.brand}</strong></Typography>
+                                                </Grid>
+                                                <Grid className={styles.infoContainer}>
+                                                    <Typography variant="subtitle2"><strong>Modelo: {shoe.model}</strong></Typography>
+                                                </Grid>
+                                            <Grid className={styles.infoContainer}>
+                                                <Typography variant="body2">Price ${shoe.price}</Typography>
+                                                </Grid>
+                                            <Grid className={styles.infoContainer}>
+                                                <Typography variant="body2">Tienda: {shoe.store.name}</Typography>
+                                                </Grid>
+                                                <Grid className={styles.infoContainer}>
+                                                    <Typography variant="subtitle2"><strong>Fecha de Lanzamiento: {moment(shoe.releaseAt).format('DD/MM/YYYY h:mm a')}</strong></Typography>
+                                                </Grid>
                                             </CardContent>
                                         </CardActionArea>
                                     </Card>

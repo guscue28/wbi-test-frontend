@@ -1,8 +1,9 @@
 import { ShoesData } from '../../interfaces/Shoes.interfaces';
+import { Sort } from '../../interfaces/Sort.interfaces';
 import { Api } from '../api/api';
 import { $axios } from '../Axios';
 
-export const requestShoes = async (sorts:any): Promise<ShoesData> => {
+export const requestShoes = async (sorts:Sort): Promise<ShoesData> => {
   const url: string = `${Api.requestAllShoes}`;
   const { data } = await $axios.get(url, {
     params: {
