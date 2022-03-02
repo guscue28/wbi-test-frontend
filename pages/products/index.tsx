@@ -74,7 +74,6 @@ const Products = () => {
         }
         await getAllShoes(sort);
         await getAllStores();
-        console.log('router', router)
         setLoading(false);
     }
     
@@ -122,7 +121,6 @@ const Products = () => {
                             setStoresFilter('');
                             }
                             setStoresFilter(val.value);
-                            console.log('val', val.value);
                         })}
                         value={storesFilter}
                         placeholder="Tiendas"
@@ -137,7 +135,6 @@ const Products = () => {
                             setReleasedFilter('');
                             }
                             setReleasedFilter(val.value);
-                            console.log('val', val.value);
                         })}
                         value={releasedFilter}
                         placeholder="Fecha de Lanzamiento"
