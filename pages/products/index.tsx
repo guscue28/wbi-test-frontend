@@ -47,10 +47,10 @@ const Products = () => {
             label: 'Tiendas',
         }
     ]
-    for (let i = 1980; i <= new Date().getFullYear(); i++) {
+    for (let i = 1995; i <= new Date().getFullYear(); i++) {
         released.push({
-            value: i,
-            label: i,
+            value: String(i),
+            label: String(i),
         })
     }
     stores.map((el: Stores) => allStores.push({
@@ -123,7 +123,7 @@ const Products = () => {
                         placeholder="Tiendas"
                         
                         controlClassName={styles.filter}
-                        menuClassName={styles.filter}
+                        menuClassName={styles.filterReleased}
                                     />
                         <Dropdown
                         options={released}
@@ -136,7 +136,7 @@ const Products = () => {
                         })}
                         value={releasedFilter}
                         placeholder="Fecha de Lanzamiento"
-                        controlClassName={styles.filterReleased}
+                        controlClassName={styles.filter}
                         menuClassName={styles.filterReleased}
                         />
                     </Grid>
